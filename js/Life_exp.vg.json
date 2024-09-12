@@ -1,0 +1,101 @@
+{
+  "data": {"url": "data/life_expectancy.csv"},
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 650,
+  "height": 240,
+  "transform": [
+    {
+      "filter": {
+        "field": "Country",
+        "oneOf": ["World", "United States", "China", "Japan", "Germany", "India"]
+      }
+    },
+    {
+      "filter": {
+        "field": "Year",
+        "oneOf": [1960, 2021]
+      }
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Life Expectancy",
+      "type": "quantitative",
+      "title": "Life Expectancy (Years)"
+    },
+    "y": {
+      "field": "Country",
+      "type": "nominal",
+      "title": "Country",
+      "axis": {
+        "offset": 5,
+        "ticks": false,
+        "minExtent": 70,
+        "domain": false
+      }
+    },
+    "tooltip": [
+      {"field": "Country", "type": "nominal", "title": "Country"},
+      {"field": "Life Expectancy", "type": "quantitative", "title": "Life Expectancy (Years)", "format": ".4s"},
+      {"field": "Year", "type": "ordinal", "title": "Year"}
+    ]
+  },
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "detail": {
+          "field": "Country",
+          "type": "nominal"
+        },
+        "color": {"value": "black"}
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true
+      },
+      "encoding": {
+        "color": {
+          "field": "Year",
+          "type": "ordinal",
+          "scale": {
+            "domain": [1960, 2021],
+            "range": ["blue", "red"]
+          },
+          "title": "Year"
+        },
+        "size": {"value": 100},
+        "opacity": {"value": 1}
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10
+      },
+      "transform": [{"filter": "datum.Year === 1960 && datum.Country === 'China'"}],
+      "encoding": {
+        "text": {"value": "low life expectancy in poor time"},
+        "x": {"field": "Life Expectancy", "type": "quantitative"},
+        "y": {"field": "Country", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "dx": 0,
+        "dy": -10
+      },
+      "transform": [{"filter": "datum.Year === 2021 && datum.Country === 'China'"}],
+      "encoding": {
+        "text": {"value": "high life expectancy with high GDP"},
+        "x": {"field": "Life Expectancy", "type": "quantitative"},
+        "y": {"field": "Country", "type": "nominal"}
+      }
+    }
+  ]
+}
